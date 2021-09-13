@@ -12,7 +12,10 @@ $stmt->execute([$slug]);
 $row = $stmt->fetch();
 $content .= "<h1>{$row['title']}</h1>";
 
-$content .="<br><a href=\"edit.php?id={$row['id']}\">Edit Post</a><br>";
-$content .="<br><a href=\"delete.php?id={$row['id']}\">Delete Post</a><br>";
+if($_SESSION['is_admin'])
+{
+    $content .="<br><a href=\"edit.php?id={$row['id']}\">Edit Post</a><br>";
+    $content .="<br><a href=\"delete.php?id={$row['id']}\">Delete Post</a><br>";
+}
 
 echo $content;

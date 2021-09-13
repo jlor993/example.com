@@ -9,9 +9,10 @@ $input = filter_input_array(INPUT_POST,[
     'password'=>FILTER_UNSAFE_RAW
 ]);
 
+$message=null;
+
 // 3. Check for a POST request
 if(!empty($input)){
-
     // 4. Query the database for the requested user
     $input = array_map('trim', $input);
     $sql='SELECT id, hash FROM users WHERE email=:email';
@@ -29,9 +30,24 @@ if(!empty($input)){
             $_SESSION['user'] = [];
             $_SESSION['user']['id']=$row['id'];
 
+            if($input['email']=="Admin@admin.com")
+            {
+                $_SESSION['is_admin'] = true;
+            }
+            else
+            {
+                $_SESSION['is_admin'] = false;
+            }
+
             // 6.2 Redirect the user
             header('LOCATION: ' . $_POST['goto']);
         }
+        else {
+            $message="<div class=\"alert alert-danger\">{ Invalid email or password }</div>";
+        }
+    }
+    else {
+        $message="<div class=\"alert alert-danger\">{ Invalid email or password }</div>";
     }
 }
 $meta=[];
@@ -39,6 +55,7 @@ $meta['title']="Login";
 
 $content=<<<EOT
 <h1>{$meta['title']}</h1>
+{$message}
 <form method="post" autocomplete="off">
     <div class="form-group">
         <label for="email">Email</label>

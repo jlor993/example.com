@@ -84,7 +84,7 @@ if(!empty($input)){
                 'hash'=>$hash
             ]);
 
-            header('LOCATION: /login.php');
+            header('LOCATION: /example.com/public/login.php');
 
         } catch(PDOException $e) {
             $message="<div class=\"alert alert-danger\">{$e->errorInfo[2]}</div>";
