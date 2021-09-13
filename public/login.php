@@ -40,7 +40,15 @@ if(!empty($input)){
             }
 
             // 6.2 Redirect the user
-            header('LOCATION: ' . $_POST['goto']);
+            if (empty($_GET))
+            {
+                $message="<div>Login Successful!</div>";
+                header('LOCATION: ');
+            }
+            else
+            {
+                header('LOCATION: ' . $_GET['goto']);
+            }
         }
         else {
             $message="<div class=\"alert alert-danger\">{ Invalid email or password }</div>";
