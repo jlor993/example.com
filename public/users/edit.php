@@ -1,6 +1,6 @@
 <?php
+require '../../core/bootstrap.php';
 require '../../core/functions.php';
-require '../../config/keys.php';
 require '../../core/db_connect.php';
 
 // Get the post

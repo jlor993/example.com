@@ -1,5 +1,8 @@
 <?php
+require '../../core/bootstrap.php';
 include '../../core/db_connect.php';
+
+checkSession();
 
 $input = filter_input_array(INPUT_GET);
 $id = preg_replace("/[^a-z0-9-]+/", "", $input['id']);

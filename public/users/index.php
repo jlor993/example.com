@@ -1,5 +1,8 @@
 <?php
+require '../../core/bootstrap.php';
 include '../../core/db_connect.php';
+
+checkSession();
 
 $content=null;
 $stmt = $pdo->query("SELECT * FROM users");
