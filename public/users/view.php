@@ -10,6 +10,7 @@ $stmt->execute([$id]);
 
 $row = $stmt->fetch();
 $content .= "<h1>{$row['email']}</h1>";
+$content .= "<h2>{$row['first_name']} {$row['last_name']}</h2>";
 
 $content .="<br><a href=\"edit.php?id={$row['id']}\">Edit Post</a><br>";
 $content .="<br><a href=\"delete.php?id={$row['id']}\">Delete Post</a><br>";
