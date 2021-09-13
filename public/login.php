@@ -10,6 +10,8 @@ $input = filter_input_array(INPUT_POST,[
 ]);
 
 $message=null;
+$forgot_password=null;
+$attempt=0;
 
 // 3. Check for a POST request
 if(!empty($input)){
@@ -51,11 +53,16 @@ if(!empty($input)){
             }
         }
         else {
-            $message="<div class=\"alert alert-danger\">{ Invalid email or password }</div>";
+            $attempt++;
+            $message="<div class=\"alert alert-danger\">{ Invalid password }</div>";
         }
     }
     else {
-        $message="<div class=\"alert alert-danger\">{ Invalid email or password }</div>";
+        $message="<div class=\"alert alert-danger\">{ Invalid email }</div>";
+    }
+    if($attempt > 0)
+    {
+        $forgot_password="<a class=\"nav-link\" href=\"/example.com/public/resetpassword.php\">Reset Password</a>";
     }
 }
 $meta=[];
@@ -85,6 +92,7 @@ $content=<<<EOT
     </div>
     <input type="submit" class="btn btn-primary">
 </form>
+{$forgot_password}
 EOT;
 
 require '../core/layout.php';
