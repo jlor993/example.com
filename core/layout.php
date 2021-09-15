@@ -56,6 +56,7 @@ function active($name){
                 <a class="nav-link" href="/example.com/public/posts/index.php">Posts</a>
                 <a class="nav-link" href="/example.com/public/login.php">Login</a>
                 <a class="nav-link" href="/example.com/public/logout.php">Logout</a>
+                <a class="nav-link" href="/example.com/public/register.php">Register</a>
               </div>
             </div>
           </div>

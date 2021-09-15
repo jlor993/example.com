@@ -2,6 +2,7 @@
 require '../../core/bootstrap.php';
 require '../../core/functions.php';
 require '../../core/db_connect.php';
+require '../../core/About/src/Validation/Validate.php';
 
 // Get the post
 $get = filter_input_array(INPUT_GET);
@@ -25,75 +26,161 @@ $meta['email']= "Edit: {$row['email']}";
 // Update the post
 $message=null;
 
-$args = [
-    'id'=>FILTER_SANITIZE_STRING, //strips HMTL
-    'first_name'=>FILTER_SANITIZE_STRING, //strips HMTL
-    'last_name'=>FILTER_SANITIZE_STRING, //strips HMTL
-    'email'=>FILTER_SANITIZE_STRING, //strips HMTL
-    'password'=>FILTER_SANITIZE_STRING  //strips HTML
-];
+$valid = new About\Validation\Validate();
+$message=null;
+$id=$_SESSION['user']['id'];
 
-$input = filter_input_array(INPUT_POST, $args);
+$input = filter_input_array(INPUT_POST,[
+    'first_name'=>FILTER_SANITIZE_STRING,
+    'last_name'=>FILTER_SANITIZE_STRING,
+    'email'=>FILTER_SANITIZE_EMAIL,
+    'password'=>FILTER_UNSAFE_RAW,
+    'confirm_password'=>FILTER_UNSAFE_RAW
+]);
 
 if(!empty($input)){
 
-    //Strip white space, begining and end
-    $input = array_map('trim', $input);
+    $valid->validation = [
 
-    //Sanitized insert
-    $sql = 'UPDATE
-        users
-      SET
-        first_name=:first_name,
-        last_name=:last_name,
-        email=:email,
-        password=:password
-      WHERE
-        id=:id';
+        'email'=>[[
+            'rule'=>'email',
+            'message'=>'Please enter a valid email'
+        ],[
+            'rule'=>'notEmpty',
+            'message'=>'Please enter a email'
+        ]],
 
-    if($pdo->prepare($sql)->execute([
-        $input['first_name'],
-        $input['last_name'],
-        $input['email'],
-        $input['password'],
-        'id'=>$input['id']
-    ])){
-       header('LOCATION:./view.php?id=' . $row['id']);
-    }else{
-        $message = 'Something bad happened';
+        'first_name'=>[[
+            'rule'=>'notEmpty',
+            'message'=>'Please enter a first name'
+        ]],
+
+        'last_name'=>[[
+            'rule'=>'notEmpty',
+            'message'=>'Please enter a last name'
+        ]],
+
+        'password'=>[[
+            'rule'=>'notEmpty',
+            'message'=>'Please enter a password'
+        ],[
+            'rule'=>'strength',
+            'message'=>'Must contain [\Wa-zA-Z0-9-!]'
+        ]],
+
+        'confirm_password'=>[[
+            'rule'=>'notEmpty',
+            'message'=>'Please confirm your password'
+        ],[
+            'rule'=>'matchPassword',
+            'message'=>'Passwords do not match'
+        ]],
+
+    ];
+
+    if(empty($valid->errors))
+    {
+        //Strip white space, begining and end
+        $input = array_map('trim', $input);
+        $hash = password_hash($input['password'], PASSWORD_DEFAULT); 
+
+        //Sanitized insert
+        $sql = 'UPDATE
+            users
+        SET
+            id=UUID(),
+            first_name=:first_name,
+            last_name=:last_name,
+            email=:email,
+            hash=:hash
+        WHERE
+            id=:id';
+
+        $stmt=$pdo->prepare($sql);
+
+        try {
+
+            $stmt->execute([
+                'id'=>$id,
+                'email'=>$input['email'],
+                'first_name'=>$input['first_name'],
+                'last_name'=>$input['last_name'],
+                'hash'=>$hash
+            ]);
+
+            header('LOCATION:./view.php?id=' . $row['id']);
+
+        } catch(PDOException $e) {
+            $message .= "<div class=\"alert alert-danger\">{$e->errorInfo[2]}</div>";
+        }
     }
 }
 
 $content = <<<EOT
 <h1>Edit: {$row['email']}</h1>
 {$message}
-<form method="post">
+<form method="post" autocomplete="off">
 
-<input id="id" name="id" value="{$row['id']}" type="hidden">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+            class="form-control" 
+            id="email" 
+            name="email" 
+            type="email"
+            value="{$valid->userInput('email')}"
+        >
+        <div class="text text-danger">{$valid->error('email')}</div>
+    </div>
 
-<div class="form-group">
-    <label for="first_name">First Name</label>
-    <input id="first_name" name="first_name" type="text" class="form-control">
-</div>
+    <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input 
+            class="form-control" 
+            id="first_name" 
+            name="first_name"
+            value="{$valid->userInput('first_name')}"
+        >
+        <div class="text text-danger">{$valid->error('first_name')}</div>
+    </div>
 
-<div class="form-group">
-    <label for="last_name">Last Name</label>
-    <input id="last_name" name="last_name" type="text" class="form-control">
-</div>
 
-<div class="form-group">
-    <label for="email">Email</label>
-    <input id="email" name="email" type="text" class="form-control">
-</div>
+    <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input 
+            class="form-control" 
+            id="last_name" 
+            name="last_name" 
+            value="{$valid->userInput('last_name')}"
+        >
+        <div class="text text-danger">{$valid->error('last_name')}</div>
+    </div>
 
-<div class="form-group">
-    <label for="password">Password</label>
-    <input id="password" name="password" type="text" class="form-control">
-</div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+            class="form-control" 
+            id="password" 
+            name="password" 
+            type="password"
+            value="{$valid->userInput('password')}"
+        >
+        <div class="text text-danger">{$valid->error('password')}</div>
+    </div>
 
-<div class="form-group">
-    <input type="submit" value="Submit" class="btn btn-primary">
-</div>
+    <div class="form-group">
+        <label for="confirm_password">Confirm Password</label>
+        <input 
+            class="form-control" 
+            id="confirm_password" 
+            name="confirm_password" 
+            type="password"
+            value="{$valid->userInput('confirm_password')}"
+        >
+        <div class="text text-danger">{$valid->error('confirm_password')}</div>
+    </div>
+
+    <input type="submit" class="btn btn-primary">
 </form>
 <br><hr><br>
 EOT;

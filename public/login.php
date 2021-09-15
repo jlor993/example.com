@@ -32,7 +32,7 @@ if(!empty($input)){
             $_SESSION['user'] = [];
             $_SESSION['user']['id']=$row['id'];
 
-            if($input['email']=="Admin@admin.com")
+            if($input['email']=="admin@admin.com")
             {
                 $_SESSION['is_admin'] = true;
             }
