@@ -67,8 +67,18 @@ function active($name){
                 <?php echo $content; ?>
             </div>
         </div>
-            
+        <br>
+        
+        <div id="Footer" class="clearfix">
+            <small>&copy; 2021 - Jeffrey Lor</small>
+            <ul role="navigation">
+                <li><a href="/example.com/public/terms.php">Terms of Service</a></li>
+                <li><a href="/example.com/public/privacy.php">Privacy Policy</a></li>
+            </ul>
         </div>
+
+      </div>
+
     </div>
 
   </body>

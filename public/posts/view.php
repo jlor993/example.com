@@ -18,4 +18,4 @@ if($_SESSION['is_admin'])
     $content .="<br><a href=\"delete.php?id={$row['id']}\">Delete Post</a><br>";
 }
 
-echo $content;
+include '../../core/layout.php';

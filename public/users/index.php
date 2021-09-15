@@ -2,6 +2,11 @@
 require '../../core/bootstrap.php';
 include '../../core/db_connect.php';
 
+$meta=[];
+$meta['title']="Jeffrey Lor Users";
+$meta['description']="Users of Jeffrey Lor's Website";
+$meta['keywords']="Jeffrey Lor, users";
+
 checkSession();
 
 $content=null;
