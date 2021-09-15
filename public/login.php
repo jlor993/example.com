@@ -90,7 +90,9 @@ $content=<<<EOT
             type="password"
         >
     </div>
-    <input type="submit" class="btn btn-primary">
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" id="login-submit">
+    </div>
 </form>
 {$forgot_password}
 EOT;

@@ -32,51 +32,42 @@ function active($name){
 <!-- End sanitized content -->
 
       <meta charset="UTF-8">
-      <title>Example Site with SQL</title>
+      <title>Jeffrey Lor PHP Site</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" type="text/css" href="css/dist/main.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+      <link href="./dist/css/main.min.css" type="text/css" rel="stylesheet">
   </head>
   <body>
 
-    <div id="Wrapper">
-        <nav class="top-nav">
-            <a href="index.html" class="pull-left" href="/">Site Logo</a>
-            <ul role="navigation">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="resume.php">Resume</a></li>
-                <li><a href="contact.php">Contact</a></li>
-            </ul>
-            <li class="nav-item">
-            <a class="nav-link" href="/example.com/public/logout.php">Logout</a>
-            </li>
-
-            <li class="nav-item">
+      <div id="Wrapper">
+        <nav class="navbar sticky-top navbar-dark bg-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">My Website</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-link" aria-current="page" href="index.php">Home</a>
+                <a class="nav-link" href="/example.com/public/resume.php">Resume</a>
+                <a class="nav-link" href="/example.com/public/contact.php">Contact</a>
+                <a class="nav-link" href="/example.com/public/users/index.php">Users</a>
+                <a class="nav-link" href="/example.com/public/posts/index.php">Posts</a>
                 <a class="nav-link" href="/example.com/public/login.php">Login</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="/example.com/public/register.php">Register</a>
-            </li>
+                <a class="nav-link" href="/example.com/public/logout.php">Logout</a>
+              </div>
+            </div>
+          </div>
         </nav>
+        
 
         <div class="row">
             <div id="Content">
                 <?php echo $content; ?>
             </div>
-            <div id="Sidebar">
-              <div id="AboutMe">
-                <div class="header">Hello, I am YOUR-NAME</div>
-                <img src="https://www.gravatar.com/avatar/4678a33bf44c38e54a58745033b4d5c6?d=mm" alt="My Avatar" class="img-circle">
-              </div>
-            </div>
         </div>
-
-        <div id="Footer" class="clearfix">
-            <small>&copy; 2017 - MyAwesomeSite.com</small>
-            <ul role="navigation">
-                <li><a href="terms.html">Terms</a></li>
-                <li><a href="privacy.html">Privacy</a></li>
-            </ul>
+            
         </div>
     </div>
 
