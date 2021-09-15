@@ -14,7 +14,7 @@ $options = [
 ];
 try {
      $pdo = new PDO($dsn, $user, $pass, $options);
-     var_dump($pdo);
+     //var_dump($pdo);
 } catch (\PDOException $e) {
      throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
