@@ -88,7 +88,7 @@ if(!empty($input)){
         $sql = 'UPDATE
             users
         SET
-            id=UUID(),
+            id=:id,
             first_name=:first_name,
             last_name=:last_name,
             email=:email,
